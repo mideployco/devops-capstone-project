@@ -186,7 +186,6 @@ class TestAccountService(TestCase):
 
     def test_unsupported_media_type(self):
         """It should not Create an Account when sending the wrong media type"""
-
         account = AccountFactory()
 
         response = self.client.post(
@@ -198,6 +197,22 @@ class TestAccountService(TestCase):
         self.assertEqual(
             response.status_code,
             status.HTTP_415_UNSUPPORTED_MEDIA_TYPE
+        )
+
+    ######################################################################
+    #  M E T H O D   N O T   A L L O W E D
+    ######################################################################
+
+    def test_method_not_allowed(self):
+        """It should not allow unsupported HTTP methods"""
+        response = self.client.put(
+            BASE_URL,
+            json={"name": "Test Account"}
+        )
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_405_METHOD_NOT_ALLOWED
         )
 
     ######################################################################
